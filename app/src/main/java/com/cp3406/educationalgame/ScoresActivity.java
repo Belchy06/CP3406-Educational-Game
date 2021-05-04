@@ -25,17 +25,18 @@ public class ScoresActivity extends AppCompatActivity {
         try {
             db = databaseHelper.getReadableDatabase();
             cursor = db.query("SCORES",
-                    new String[]{"_id", "SCORE"},
-                    null, null, null, null, null);
+                    new String[]{"_id", "('LEVEL ' || LEVEL || ':  ' || DATE || ' - ' || SCORE) AS RESULT"},
+                    null, null, null, null, "SCORE DESC");
             SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this,
                     android.R.layout.simple_list_item_1,
                     cursor,
-                    new String[] {"SCORE"},
+                    new String[] {"RESULT"},
                     new int[] {android.R.id.text1},
                     0);
+            // listAdapter.setViewBinder();
             scoresList.setAdapter(listAdapter);
         } catch(SQLException e) {
-            Toast toast = Toast.makeText(this, "Scores Ddatabase Unavailable", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "Scores Database Unavailable", Toast.LENGTH_SHORT);
             toast.show();
         }
     }

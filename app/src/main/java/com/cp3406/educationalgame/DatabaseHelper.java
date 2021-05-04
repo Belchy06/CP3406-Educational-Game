@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 3;
 
 
     DatabaseHelper(Context context) {
@@ -29,7 +29,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + "SCORE INTEGER);");
         }
         if (oldVersion < 2) {
-            // db.execSQL("ALTER TABLE SCORES ADD COLUMN FAVORITE NUMERIC;");
+            db.execSQL("ALTER TABLE SCORES ADD COLUMN DATE TEXT;");
         }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE SCORES ADD COLUMN LEVEL INTEGER;");
+        }
+
     }
 }

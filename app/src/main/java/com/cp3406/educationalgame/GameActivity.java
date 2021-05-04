@@ -11,6 +11,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import android.os.CountDownTimer;
@@ -23,7 +26,7 @@ import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements OnClickListener {
     private int timerSeconds;
-    private final int timerLength = 3;
+    private final int timerLength = 60;
     private int level = 0;
     private int answer = 0;
     private int operator = 0;
@@ -40,6 +43,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
 
     private TextView question, answerTxt, scoreTxt;
     private TimerView timerView;
+
+    private UpdateScoresTask updateScoresTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +127,9 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
         AlertDialog ad = builder.create();
         ad.show();
 
-        new UpdateDrinkTask().execute();
+        updateScoresTask = new UpdateScoresTask();
+        updateScoresTask.execute();
+
     }
 
     public int[] generateQuestion(int level, Random rand, int[][][] levelVals) {
@@ -212,20 +219,33 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
         question.setText(questionTxt);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(updateScoresTask != null) {
+            updateScoresTask.cancel(true);
+        }
+    }
+
     //Inner class to update the drink.
-    private class UpdateDrinkTask extends AsyncTask<Integer, Void, Boolean> {
+    private class UpdateScoresTask extends AsyncTask<Integer, Void, Boolean> {
         private ContentValues scoreValues;
 
         protected void onPreExecute() {
+            DateFormat format = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+            String date = format.format(new Date());
+
             scoreValues = new ContentValues();
             scoreValues.put("SCORE", getScore());
+            scoreValues.put("DATE", date);
+            scoreValues.put("LEVEL", level + 1);
         }
 
         protected Boolean doInBackground(Integer... scores) {
-            SQLiteOpenHelper starbuzzDatabaseHelper =
+            SQLiteOpenHelper databaseHelper =
                     new DatabaseHelper(GameActivity.this);
             try {
-                SQLiteDatabase db = starbuzzDatabaseHelper.getWritableDatabase();
+                SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
                 db.insert("SCORES", null, scoreValues);
                 db.close();
@@ -243,11 +263,12 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
             }
         }
     }
+
+    enum Operator {
+        ADD,
+        SUBTRACT,
+        MULTIPLY,
+        DIVIDE
+    }
 }
 
-enum Operator {
-    ADD,
-    SUBTRACT,
-    MULTIPLY,
-    DIVIDE
-}

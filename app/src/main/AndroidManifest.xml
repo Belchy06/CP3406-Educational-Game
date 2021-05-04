@@ -28,6 +28,9 @@
         <activity android:name=".ScoresActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".SettingsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

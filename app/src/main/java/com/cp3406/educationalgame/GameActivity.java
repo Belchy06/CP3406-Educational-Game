@@ -267,17 +267,20 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
         }
 
         protected Boolean doInBackground(Integer... scores) {
-            SQLiteOpenHelper databaseHelper =
-                    new DatabaseHelper(GameActivity.this);
-            try {
-                SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            if(scoreValues.getAsInteger("SCORE") != 0) {
+                SQLiteOpenHelper databaseHelper =
+                        new DatabaseHelper(GameActivity.this);
+                try {
+                    SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-                db.insert("SCORES", null, scoreValues);
-                db.close();
-                return true;
-            } catch (SQLiteException e) {
-                return false;
+                    db.insert("SCORES", null, scoreValues);
+                    db.close();
+                    return true;
+                } catch (SQLiteException e) {
+                    return false;
+                }
             }
+            return false;
         }
 
         protected void onPostExecute(Boolean success) {

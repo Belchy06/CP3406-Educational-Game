@@ -7,28 +7,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/intro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:padding="20dp"
-            android:text="@string/app_name"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
+        android:gravity="center"
+        android:layout_gravity="center">
         <Button
             android:id="@+id/play_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/intro"
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
             android:padding="20dp"
-            android:text="Play"
-            android:textColor="#ff333333"
+            android:text="@string/play"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -40,8 +28,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
             android:padding="20dp"
-            android:text="How to Play"
-            android:textColor="#ff333333"
+            android:text="@string/how_to_play"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -53,8 +40,19 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
             android:padding="20dp"
-            android:text="High Scores"
-            android:textColor="#ff333333"
+            android:text="@string/high_scores"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/settings_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/score_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:padding="20dp"
+            android:text="@string/settings"
             android:textSize="20sp"
             android:textStyle="bold" />
 

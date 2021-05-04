@@ -199,10 +199,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
                 int enteredAnswer = Integer.parseInt(answerContent);
                 int exScore = getScore();
                 if(enteredAnswer == answer){
-                    String score = "Score: " + (exScore+1);
+                    String score = "Score: \n" + (exScore+1);
                     scoreTxt.setText(score);
-                } else {
-                    // TODO add a strike
                 }
                 answerTxt.setText("?");
                 int[] questionVals = generateQuestion(level, random, levelVals);
@@ -223,7 +221,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
 
     private int getScore(){
         String scoreStr = scoreTxt.getText().toString();
-        return Integer.parseInt(scoreStr.substring(scoreStr.lastIndexOf(" ") + 1));
+        return Integer.parseInt(scoreStr.substring(scoreStr.lastIndexOf(" ") + 2));
     }
 
     private void setQuestionText(int[] questionVals) {

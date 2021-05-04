@@ -3,7 +3,7 @@
     <string name="help_info">You Do The Math! is an arithmetic game.\n\nChoose Easy, Medium or Hard level to begin.\n\nAnswer the question by typing on the number pad displayed and pressing enter. Press the C button to clear an existing answer. Each question may be an addition, subtraction, multiplication or division.\n\nYour ten best scores will automatically be saved into the High Scores.</string>
     <string name="high_scores">HIGH SCORES</string>
     <string name="result">result</string>
-    <string name="inital_score">Score: 0</string>
+    <string name="inital_score">Score: \n0</string>
     <string name="initial_question">0 + 0 =</string>
     <string name="initial_answer">\?</string>
     <string name="clear">C</string>
@@ -18,4 +18,8 @@
     <string name="_3">3</string>
     <string name="_0">0</string>
     <string name="enter">Enter</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="play">Play</string>
+    <string name="how_to_play">How to Play</string>
+    <string name="settings">Settings</string>
 </resources>

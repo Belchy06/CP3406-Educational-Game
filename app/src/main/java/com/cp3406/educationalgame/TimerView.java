@@ -62,6 +62,7 @@ public class TimerView extends android.view.View {
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setColor(color);
         textPaint.setTextSize(150);
     }
 

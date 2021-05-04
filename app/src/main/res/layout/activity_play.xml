@@ -1,4 +1,5 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,11 +16,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center|start"
+            android:layout_gravity="center"
             android:paddingStart="0dp"
             android:paddingEnd="20dp"
             android:text="@string/inital_score"
-            android:textColor="#ffffffff"
-            android:textSize="20sp"
+            android:textSize="50sp"
             android:textStyle="bold" />
 
         <com.cp3406.educationalgame.TimerView
@@ -29,11 +30,12 @@
             android:layout_weight="1"
             android:gravity="center|end"
             android:paddingEnd="20dp"
-            android:textColor="#ffffffff"
+            android:paddingStart="0dp"
             android:textSize="20sp"
             android:textStyle="bold"
             app:progress="35"
-            app:progressBarThickness="8sp"/>
+            app:progressBarThickness="8sp"
+            app:progressbarColor="@color/design_default_color_primary"/>
 
     </LinearLayout>
 
@@ -51,11 +53,9 @@
             android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="#ffffffff"
             android:gravity="center|end"
             android:padding="5dp"
             android:text="@string/initial_question"
-            android:textColor="#ff333333"
             android:textSize="30sp" />
 
         <TextView
@@ -66,11 +66,9 @@
             android:layout_marginEnd="2dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="#ffffffff"
             android:gravity="center|start"
             android:padding="5dp"
             android:text="@string/initial_answer"
-            android:textColor="#ff333333"
             android:textSize="30sp" />
 
         <Button
@@ -82,7 +80,6 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="@string/clear"
-            android:textColor="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -103,9 +100,9 @@
             android:padding="5dp"
             android:tag="7"
             android:text="@string/_7"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/btn8"
@@ -117,9 +114,9 @@
             android:padding="5dp"
             android:tag="8"
             android:text="@string/_8"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
 
         <Button
             android:id="@+id/btn9"
@@ -131,9 +128,9 @@
             android:padding="5dp"
             android:tag="9"
             android:text="@string/_9"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
     </LinearLayout>
 
     <LinearLayout
@@ -152,9 +149,9 @@
             android:padding="5dp"
             android:tag="4"
             android:text="@string/_4"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
 
         <Button
             android:id="@+id/btn5"
@@ -166,9 +163,9 @@
             android:padding="5dp"
             android:tag="5"
             android:text="@string/_5"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
 
         <Button
             android:id="@+id/btn6"
@@ -180,9 +177,9 @@
             android:padding="5dp"
             android:tag="6"
             android:text="@string/_6"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
     </LinearLayout>
 
     <LinearLayout
@@ -201,9 +198,9 @@
             android:padding="5dp"
             android:tag="1"
             android:text="@string/_1"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
 
         <Button
             android:id="@+id/btn2"
@@ -215,9 +212,9 @@
             android:padding="5dp"
             android:tag="2"
             android:text="@string/_2"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
 
         <Button
             android:id="@+id/btn3"
@@ -229,9 +226,9 @@
             android:padding="5dp"
             android:tag="3"
             android:text="@string/_3"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
     </LinearLayout>
 
     <LinearLayout
@@ -250,9 +247,9 @@
             android:padding="5dp"
             android:tag="0"
             android:text="@string/_0"
-            android:textColor="#ffcccccc"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
 
         <Button
             android:id="@+id/enter"
@@ -263,8 +260,8 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="@string/enter"
-            android:textColor="#FFFFFF"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle"/>
     </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

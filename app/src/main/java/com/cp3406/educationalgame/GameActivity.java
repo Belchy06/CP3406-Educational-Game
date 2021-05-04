@@ -1,35 +1,37 @@
 package com.cp3406.educationalgame;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.Locale;
 import java.util.Random;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity implements OnClickListener {
     private int timerSeconds;
-    private int timerLength = 60;
-    private int level = 0, answer = 0, operator = 0, operand1 = 0, operand2 = 0;
-    private final int ADD_OPERATOR = 0, SUBTRACT_OPERATOR = 1, MULTIPLY_OPERATOR = 2, DIVIDE_OPERATOR = 3;
-    private String[] operators = {"+", "-", "*", "/"};
+    private final int timerLength = 60;
+    private int level = 0;
+    private int answer = 0;
+    private int operator = 0;
+    private final String[] operators = {"+", "-", "*", "/"};
     private Random random;
-    private int[][] levelMin = {
-            {1, 11, 21},
-            {1, 5, 10},
-            {2, 5, 10},
-            {2, 3, 5}};
-    private int[][] levelMax = {
-            {10, 25, 50},
-            {10, 20, 30},
-            {5, 10, 15},
-            {10, 50, 100}};
+    private final int[][][] levelVals = {
+            // Levels
+            // 1        2       3        4
+            {{1,10}, {0,20}, {0,50}, {0,100}}, // +
+            {{0, 0}, {0,20}, {0,50}, {0,100}}, // -
+            {{0, 0}, {0, 0}, {1, 5}, {1, 10}}, // *
+            {{0, 0}, {0, 0}, {0, 0}, {1, 50}}  // /
+    };
 
     private TextView question, answerTxt, scoreTxt;
-    private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, enterBtn, clearBtn;
     private TimerView timerView;
 
     @Override
@@ -42,18 +44,18 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
         answerTxt = findViewById(R.id.answer);
         scoreTxt =  findViewById(R.id.score);
 
-        btn1 = findViewById(R.id.btn1);
-        btn2 = findViewById(R.id.btn2);
-        btn3 = findViewById(R.id.btn3);
-        btn4 = findViewById(R.id.btn4);
-        btn5 = findViewById(R.id.btn5);
-        btn6 = findViewById(R.id.btn6);
-        btn7 = findViewById(R.id.btn7);
-        btn8 = findViewById(R.id.btn8);
-        btn9 = findViewById(R.id.btn9);
-        btn0 = findViewById(R.id.btn0);
-        enterBtn = findViewById(R.id.enter);
-        clearBtn = findViewById(R.id.clear);
+        Button btn1 = findViewById(R.id.btn1);
+        Button btn2 = findViewById(R.id.btn2);
+        Button btn3 = findViewById(R.id.btn3);
+        Button btn4 = findViewById(R.id.btn4);
+        Button btn5 = findViewById(R.id.btn5);
+        Button btn6 = findViewById(R.id.btn6);
+        Button btn7 = findViewById(R.id.btn7);
+        Button btn8 = findViewById(R.id.btn8);
+        Button btn9 = findViewById(R.id.btn9);
+        Button btn0 = findViewById(R.id.btn0);
+        Button enterBtn = findViewById(R.id.enter);
+        Button clearBtn = findViewById(R.id.clear);
 
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
@@ -74,101 +76,120 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
             int passedLevel = extras.getInt("level", -1);
             if(passedLevel >= 0) level = passedLevel;
             random = new Random();
-            generateQuestion();
+            answerTxt.setText("?");
+            int[] questionVals = generateQuestion(level, random, levelVals);
+            setQuestionText(questionVals);
         }
 
         new CountDownTimer(timerLength * 1000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                float progress =  ((float) timerSeconds / (float) timerLength) * 100;
-                timerView.setProgress(progress);
-                timerView.setSecondsRemaining(timerLength - timerSeconds);
-                // counttime.setText(String.valueOf(timer));
-                timerSeconds++;
+                updateTimer();
             }
             @Override
             public void onFinish() {
-                // counttime.setText("Finished");
+                updateTimer();
+                finishGame();
             }
         }.start();
     }
 
-    private void generateQuestion() {
-        //get a question
-        answerTxt.setText("?");
-        operator = random.nextInt(operators.length);
-        operand1 = getOperand();
-        operand2 = getOperand();
+    private void updateTimer() {
+        float progress =  ((float) timerSeconds / (float) timerLength) * 100;
+        timerView.setProgress(progress);
+        timerView.setSecondsRemaining(timerLength - timerSeconds);
+        timerSeconds++;
+    }
 
-        switch(operator) {
-            case ADD_OPERATOR:
+    private void finishGame() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("GAME OVER");
+        builder.setMessage(String.format(Locale.ENGLISH, "You scored %d", getScore()));
+        builder.setPositiveButton(
+                "Okay",
+                (dialog, id) -> {
+                    dialog.cancel();
+                    finish();
+                });
+        AlertDialog ad = builder.create();
+        ad.show();
+    }
+
+    public int[] generateQuestion(int level, Random rand, int[][][] levelVals) {
+        operator = rand.nextInt(level + 1);
+        int operand1 = getOperand(rand);
+        int operand2 = getOperand(rand);
+        Operator op = Operator.values()[operator];
+        switch(op) {
+            case ADD:
+                while(operand1 + operand2 > levelVals[operator][level][1]) {
+                    operand1 = getOperand(rand);
+                    operand2 = getOperand(rand);
+                }
                 answer = operand1 + operand2;
                 break;
-            case MULTIPLY_OPERATOR:
-                answer = operand1 * operand2;
-                break;
-            case SUBTRACT_OPERATOR:
+            case SUBTRACT:
                 // if second number is larger than first we will get a negative number, run until the answer is either 0 or larger
                 while(operand2 > operand1) {
-                    operand1 = getOperand();
-                    operand2 = getOperand();
+                    operand1 = getOperand(rand);
+                    operand2 = getOperand(rand);
                 }
                 answer = operand1 - operand2;
                 break;
-            case DIVIDE_OPERATOR:
+            case MULTIPLY:
+                answer = operand1 * operand2;
+                break;
+            case DIVIDE:
                 // generate question until we get an integer answer
-                while((((double)operand1/(double)operand2)%1 > 0) || (operand1==operand2))
+                while((((double) operand1 /(double) operand2) % 1 > 0) || (operand1 == operand2))
                 {
-                    operand1 = getOperand();
-                    operand2 = getOperand();
+                    operand1 = getOperand(rand);
+                    operand2 = getOperand(rand);
                 }
                 answer = operand1 / operand2;
                 break;
 
         }
-        String questionTxt = operand1 + " " + operators[operator] + " " + operand2 + " =";
-        question.setText(questionTxt);
-
+        return new int[]{operator, operand1, operand2, answer};
     }
 
-    private int getOperand() {
+    private int getOperand(Random rand) {
         //return operand number
-        return random.nextInt(levelMax[operator][level] - levelMin[operator][level] + 1)
-                + levelMin[operator][level];
+        int max = levelVals[operator][level][1];
+        int min = levelVals[operator][level][0];
+        return rand.nextInt(max - min + 1) + min;
     }
 
     @Override
     public void onClick(View v) {
         // button clicked
-        switch(v.getId()) {
-            case R.id.enter:
-                String answerContent = answerTxt.getText().toString();
-                if(!answerContent.endsWith("?")) {
-                    //we have an answer
-                    int enteredAnswer = Integer.parseInt(answerContent);
-                    int exScore = getScore();
-                    if(enteredAnswer == answer){
-                        scoreTxt.setText("Score: " + (exScore+1));
-                        // response.setImageResource(R.drawable.tick);
-                    } else {
-                        scoreTxt.setText("Score: 0");
-                        // response.setImageResource(R.drawable.cross);
-                    }
-                    generateQuestion();
-                }
-                break;
-            case R.id.clear:
-                answerTxt.setText("?");
-                break;
-            default:
-                int enteredNum = Integer.parseInt(v.getTag().toString());
-                if(answerTxt.getText().toString().endsWith("?")) {
-                    String answerText = "" + enteredNum;
-                    answerTxt.setText(answerText);
+        if(v.getId() == R.id.enter) {
+            String answerContent = answerTxt.getText().toString();
+            if(!answerContent.endsWith("?")) {
+                //we have an answer
+                int enteredAnswer = Integer.parseInt(answerContent);
+                int exScore = getScore();
+                if(enteredAnswer == answer){
+                    String score = "Score: " + (exScore+1);
+                    scoreTxt.setText(score);
                 } else {
-                    answerTxt.append("" + enteredNum);
+                    // TODO add a strike
                 }
-                break;
+                answerTxt.setText("?");
+                int[] questionVals = generateQuestion(level, random, levelVals);
+                setQuestionText(questionVals);
+            }
+        } else if(v.getId() == R.id.clear) {
+            answerTxt.setText("?");
+        } else {
+            int enteredNum = Integer.parseInt(v.getTag().toString());
+            if(answerTxt.getText().toString().endsWith("?")) {
+                String answerText = "" + enteredNum;
+                answerTxt.setText(answerText);
+            } else {
+                answerTxt.append("" + enteredNum);
+            }
         }
     }
 
@@ -176,4 +197,16 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
         String scoreStr = scoreTxt.getText().toString();
         return Integer.parseInt(scoreStr.substring(scoreStr.lastIndexOf(" ") + 1));
     }
+
+    private void setQuestionText(int[] questionVals) {
+        String questionTxt = questionVals[1] + " " + operators[questionVals[0]] + " " + questionVals[2] + " =";
+        question.setText(questionTxt);
+    }
+}
+
+enum Operator {
+    ADD,
+    SUBTRACT,
+    MULTIPLY,
+    DIVIDE
 }

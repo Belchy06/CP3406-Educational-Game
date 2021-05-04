@@ -6,7 +6,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.os.Bundle;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener{
@@ -34,10 +33,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             case R.id.play_btn:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Choose a level")
-                        .setSingleChoiceItems(levels, 0, (dialog, which) -> {
+                        .setSingleChoiceItems(levels, 0, (dialog, level) -> {
                             dialog.dismiss();
                             //start gameplay
-                            startPlay(which);
+                            Intent playIntent = new Intent(this, GameActivity.class);
+                            playIntent.putExtra("level", level);
+                            this.startActivity(playIntent);
                         });
                 AlertDialog ad = builder.create();
                 ad.show();
@@ -47,17 +48,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
                 this.startActivity(helpIntent);
                 break;
             case R.id.score_btn:
+                Intent scoresIntent = new Intent(this, )
                 break;
             default:
                 break;
         }
-    }
-
-    private void startPlay(int chosenLevel)
-    {
-        //start gameplay
-        Intent playIntent = new Intent(this, GameActivity.class);
-        playIntent.putExtra("level", chosenLevel);
-        this.startActivity(playIntent);
     }
 }

@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -22,11 +21,6 @@ public class TimerView extends android.view.View {
     private int min = 0;
     private int max = 100;
     private int secondsRemaining = 0;
-    private int textHeight = 150;
-    /**
-     * Start the progress at 12 o'clock
-     */
-    private int startAngle = -90;
     private int color = Color.DKGRAY;
     private RectF rectF;
     private Paint backgroundPaint;
@@ -57,7 +51,7 @@ public class TimerView extends android.view.View {
         }
 
         backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        backgroundPaint.setColor(adjustAlpha(color, 0.3f));
+        backgroundPaint.setColor(adjustAlpha(color));
         backgroundPaint.setStyle(Paint.Style.STROKE);
         backgroundPaint.setStrokeWidth(strokeWidth);
 
@@ -71,8 +65,8 @@ public class TimerView extends android.view.View {
         textPaint.setTextSize(150);
     }
 
-    private int adjustAlpha(int color, float factor) {
-        int alpha = Math.round(Color.alpha(color) * factor);
+    private int adjustAlpha(int color) {
+        int alpha = Math.round(Color.alpha(color) * (float) 0.3);
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
@@ -95,13 +89,15 @@ public class TimerView extends android.view.View {
 
         canvas.drawOval(rectF, backgroundPaint);
         float angle = - 360 * progress / max;
+        // Start the timer from 12 o'clock
+        int startAngle = -90;
         canvas.drawArc(rectF, startAngle, angle, false, foregroundPaint);
-        canvas.drawText(String.format(Locale.ENGLISH, "%ss", secondsRemaining), rectF.centerX() + textHeight/4, rectF.centerY() + textHeight/4, textPaint);
+        canvas.drawText(String.format(Locale.ENGLISH, "%s", secondsRemaining), rectF.centerX(), rectF.centerY() - ((textPaint.descent() + textPaint.ascent()) / 2), textPaint);
     }
 
     public void setProgress(float progress) {
         this.progress = progress;
-        invalidate();// Notify the view to redraw it self (the onDraw method is called)
+        invalidate(); // Notify the view to redraw it self (the onDraw method is called)
     }
 
     public void setSecondsRemaining(int seconds) {

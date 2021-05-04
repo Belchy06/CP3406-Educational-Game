@@ -26,7 +26,7 @@ public class ScoresActivity extends AppCompatActivity {
             db = databaseHelper.getReadableDatabase();
             cursor = db.query("SCORES",
                     new String[]{"_id", "('LEVEL ' || LEVEL || ':  ' || DATE || ' - ' || SCORE) AS RESULT"},
-                    null, null, null, null, "SCORE DESC");
+                    null, null, null, null, "SCORE DESC", "10");
             SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this,
                     android.R.layout.simple_list_item_1,
                     cursor,

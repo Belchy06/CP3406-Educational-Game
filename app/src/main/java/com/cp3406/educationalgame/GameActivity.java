@@ -3,11 +3,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -46,6 +49,10 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
 
     private UpdateScoresTask updateScoresTask;
 
+    private SensorManager mSensorManager;
+
+    private ShakeEventListener mSensorListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +88,11 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
         btn0.setOnClickListener(this);
         enterBtn.setOnClickListener(this);
         clearBtn.setOnClickListener(this);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorListener = new ShakeEventListener();
+
+        mSensorListener.setOnShakeListener(() -> answerTxt.setText("?"));
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -225,6 +237,21 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
         if(updateScoresTask != null) {
             updateScoresTask.cancel(true);
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
     }
 
     //Inner class to update the drink.

@@ -1,4 +1,6 @@
 package com.cp3406.educationalgame;
 
-public class SettingsActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SettingsActivity extends AppCompatActivity {
 }

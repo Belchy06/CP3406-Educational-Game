@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
                 this.startActivity(helpIntent);
                 break;
             case R.id.score_btn:
-                Intent scoresIntent = new Intent(this, )
+                Intent scoresIntent = new Intent(this, ScoresActivity.class);
+                this.startActivity(scoresIntent);
                 break;
             default:
                 break;

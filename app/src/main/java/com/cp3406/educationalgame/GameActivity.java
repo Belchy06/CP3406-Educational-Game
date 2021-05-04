@@ -2,8 +2,13 @@ package com.cp3406.educationalgame;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import java.util.Locale;
@@ -12,11 +17,13 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements OnClickListener {
     private int timerSeconds;
-    private final int timerLength = 60;
+    private final int timerLength = 3;
     private int level = 0;
     private int answer = 0;
     private int operator = 0;
@@ -114,6 +121,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
                 });
         AlertDialog ad = builder.create();
         ad.show();
+
+        new UpdateDrinkTask().execute();
     }
 
     public int[] generateQuestion(int level, Random rand, int[][][] levelVals) {
@@ -201,6 +210,38 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
     private void setQuestionText(int[] questionVals) {
         String questionTxt = questionVals[1] + " " + operators[questionVals[0]] + " " + questionVals[2] + " =";
         question.setText(questionTxt);
+    }
+
+    //Inner class to update the drink.
+    private class UpdateDrinkTask extends AsyncTask<Integer, Void, Boolean> {
+        private ContentValues scoreValues;
+
+        protected void onPreExecute() {
+            scoreValues = new ContentValues();
+            scoreValues.put("SCORE", getScore());
+        }
+
+        protected Boolean doInBackground(Integer... scores) {
+            SQLiteOpenHelper starbuzzDatabaseHelper =
+                    new DatabaseHelper(GameActivity.this);
+            try {
+                SQLiteDatabase db = starbuzzDatabaseHelper.getWritableDatabase();
+
+                db.insert("SCORES", null, scoreValues);
+                db.close();
+                return true;
+            } catch (SQLiteException e) {
+                return false;
+            }
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast toast = Toast.makeText(GameActivity.this,
+                        "Database unavailable", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 }
 

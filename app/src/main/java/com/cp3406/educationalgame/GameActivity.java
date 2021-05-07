@@ -55,6 +55,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
     private int operand1, operand2;
     private final String[] operators = {"+", "-", "*", "/"};
     private Random random;
+    private AudioManager audioManager;
     private final int[][][] levelVals = {
             // Levels
             // 1        2       3        4
@@ -79,7 +80,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-
+        audioManager = new AudioManager(this);
         timerView = findViewById(R.id.timer);
         question = findViewById(R.id.question);
         answerTxt = findViewById(R.id.answer);
@@ -252,6 +253,13 @@ public class GameActivity extends AppCompatActivity implements OnClickListener {
                 if (enteredAnswer == answer) {
                     String score = "Score: \n" + (exScore + 1);
                     scoreTxt.setText(score);
+                    if (audioManager.isReady()) {
+                        audioManager.play(Sound.CORRECT);
+                    }
+                } else {
+                    if (audioManager.isReady()) {
+                        audioManager.play(Sound.WRONG);
+                    }
                 }
                 answerTxt.setText("?");
                 int[] questionVals = generateQuestion(level, random, levelVals);

@@ -1,6 +1,10 @@
 package com.cp3406.educationalgame;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -15,6 +19,10 @@ public class ScoresActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
 
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         for(int i = 1; i < 5; i++) {
             tabLayout.addTab(tabLayout.newTab().setText("Level " + i));
@@ -23,7 +31,7 @@ public class ScoresActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Fragment fragment = new ScoresFragment(tab.getPosition() + 1);
+                Fragment fragment = ScoresFragment.newInstance(tab.getPosition() + 1);
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.placeholder_layout, fragment);
@@ -45,12 +53,20 @@ public class ScoresActivity extends AppCompatActivity {
         TabLayout.Tab tab = tabLayout.getTabAt(0); // Count Starts From 0
         if(tab != null) {
             tab.select();
-            Fragment fragment = new ScoresFragment(1);
+            Fragment fragment = ScoresFragment.newInstance(1);
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             ft.replace(R.id.placeholder_layout, fragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

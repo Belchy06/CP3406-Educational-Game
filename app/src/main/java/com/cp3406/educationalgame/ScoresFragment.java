@@ -27,9 +27,7 @@ public class ScoresFragment extends Fragment {
     private int level;
     private Context context;
 
-    public ScoresFragment(int lvl) {
-        level = lvl;
-    }
+    public ScoresFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +42,8 @@ public class ScoresFragment extends Fragment {
         View v = inflater.inflate(R.layout.scores_fragment, container, false);
         SQLiteOpenHelper databaseHelper = new DatabaseHelper(context);
         ListView scoresList = v.findViewById(R.id.high_scores_list);
+        assert getArguments() != null;
+        level = getArguments().getInt("level");
         try {
             db = databaseHelper.getReadableDatabase();
             cursor = db.query("SCORES",
@@ -68,5 +68,13 @@ public class ScoresFragment extends Fragment {
         super.onDestroy();
         cursor.close();
         db.close();
+    }
+
+    public static ScoresFragment newInstance(int level) {
+        Bundle args = new Bundle();
+        args.putInt("level", level);
+        ScoresFragment f = new ScoresFragment();
+        f.setArguments(args);
+        return f;
     }
 }

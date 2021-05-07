@@ -2,10 +2,19 @@ package com.cp3406.educationalgame;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
     SwitchCompat modeSwitch;
@@ -15,6 +24,10 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         modeSwitch = findViewById(R.id.mode_switch);
         sharedPreferences = getSharedPreferences("night", 0);
@@ -39,5 +52,13 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.apply();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

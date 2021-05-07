@@ -1,6 +1,28 @@
 <resources>
-    <string name="app_name">Educational Game</string>
-    <string name="help_info">You Do The Math! is an arithmetic game.\n\nChoose Easy, Medium or Hard level to begin.\n\nAnswer the question by typing on the number pad displayed and pressing enter. Press the C button to clear an existing answer. Each question may be an addition, subtraction, multiplication or division.\n\nYour ten best scores will automatically be saved into the High Scores.</string>
+    <string name="app_name">Quick Maths</string>
+    <string name="help_info">
+        Quick Maths is quick arithmetic game
+        \n
+        \n
+        There are 4 levels:\n
+        \t Level 1: Addition from 1 - 10\n
+        \t Level 2: Addition from 1 - 10 \n
+        \t\t\t\t\t\t\t\t\tSubtraction from 1 - 10 \n
+        \t Level 3: Addition from 1 - 50\n
+        \t\t\t\t\t\t\t\t\tSubtraction from 1 - 50\n
+        \t\t\t\t\t\t\t\t\t1 - 5 times tables\n
+        \t Level 4: Addition from 1 - 50\n
+        \t\t\t\t\t\t\t\t\tSubtraction from 1 - 50 \n
+        \t\t\t\t\t\t\t\t\t1 - 10 times tables\n
+        \t\t\t\t\t\t\t\t\tInteger division from 1 - 50\n
+        \n
+        \n
+        Answer the question by typing on the number pad displayed and pressing enter. \n
+        \n
+        Press the C button or shake the device to clear an existing answer \n
+        \n
+        Your ten best scores per level will automatically be saved into the High Scores.
+    </string>
     <string name="high_scores">HIGH SCORES</string>
     <string name="result">result</string>
     <string name="inital_score">Score: \n0</string>
@@ -23,4 +45,5 @@
     <string name="how_to_play">How to Play</string>
     <string name="settings">Settings</string>
     <string name="sample">sample</string>
+    <string name="back">Back</string>
 </resources>
